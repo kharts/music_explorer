@@ -1,3 +1,10 @@
+# music_explorer/urls.py - URL configuration for music_explorer
+#
+# Copyright 2015 kharts (https://github.com/kharts)
+#
+# This software may be used and distributed according to the terms of the
+# GNU General Public License version 2 or any later version.
+
 """music_explorer URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -18,4 +25,5 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^$', include("music_explorer_app.urls"))
 ]
