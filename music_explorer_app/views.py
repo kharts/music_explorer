@@ -12,8 +12,8 @@ from django.shortcuts import render
 def index(request):
     """
     Main view
-    :param request: - django HttpRequest object
-    :return: HttpResponse
+    :param request: django.http.HttpRequest
+    :return: django.http.HttpResponse
     """
 
     context = {}
