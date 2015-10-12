@@ -7,7 +7,16 @@
 
 __author__ = 'kharts'
 
-from django.http import HttpResponse
+from django.shortcuts import render
 
 def index(request):
-    return HttpResponse("Hello, world!")
+    """
+    Main view
+    :param request: - django HttpRequest object
+    :return: HttpResponse
+    """
+
+    context = {}
+    return render(request,
+                  "music_explorer_app/index.html",
+                  context)
