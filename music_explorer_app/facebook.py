@@ -10,10 +10,7 @@
 __author__ = 'kharts'
 
 
-import cookielib
-import urllib
-import urllib2
-import logging
+from ghost import Ghost
 
 
 class Facebook(object):
@@ -24,8 +21,10 @@ class Facebook(object):
             in case of success, saves auth cookies.
     """
 
-    def __init__(self):
-        self.cj = cookielib.CookieJar()
+    def __init__(self, session=None):
+        if session is None:
+            session = Ghost().start()
+        self.session = session
 
     def login(self, email, password):
         """
@@ -36,13 +35,9 @@ class Facebook(object):
         :return: bool - True - if login successfull, False - otherwise
         """
 
-        data = [("email", email), ("pass", password)]
-        opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(self.cj))
-        url = "https://www.facebook.com/login.php"
-        try:
-            result = opener.open(url, urllib.urlencode(data))
-        except Exception, e:
-            logging.error("Facebook login failed")
-            logging.error(str(e))
-            return False
+        url = "https://facebook.com/login.php"
+        page, extra_resources = self.session.open(url)
+        self.session.set_field_value("#email", email)
+        self.session.set_field_value("#pass", password)
+        self.session.call("#login_form", "submit", expect_loading=True)
         return True
