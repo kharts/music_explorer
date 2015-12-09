@@ -9,7 +9,7 @@
 
 __author__ = 'kharts'
 
-
+import logging
 from ghost import Ghost
 
 
@@ -36,8 +36,31 @@ class Facebook(object):
         """
 
         url = "https://facebook.com/login.php"
-        page, extra_resources = self.session.open(url)
+        try:
+            page, extra_resources = self.session.open(url)
+        except Exception, e:
+            logging.error("Facebook login failed. Couldn't connect to login page")
+            logging.error(str(e))
+            return False
         self.session.set_field_value("#email", email)
         self.session.set_field_value("#pass", password)
         self.session.call("#login_form", "submit", expect_loading=True)
         return True
+
+    def get_access_token(self, app_id):
+        """
+        Gets access token for given app
+        :param: app_id: str - application id
+        :return: str
+        """
+
+        redirect_uri = "https://www.facebook.com/connect/login_success.html"
+        url = "https://www.facebook.com/dialog/oauth?client_id=" + app_id
+        url = url + "&redirect_uri=" + redirect_uri
+        try:
+            page, extra_resources = self.session.open(url)
+        except Exception, e:
+            logging.error("Error getting Facebook access token.")
+            logging.error(str(e))
+            return None
+        return None
