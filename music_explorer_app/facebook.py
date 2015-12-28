@@ -26,6 +26,7 @@ class Facebook(object):
         if session is None:
             session = Ghost().start()
         self.session = session
+        self.login_successful = False
 
     def login(self, email, password):
         """
@@ -42,11 +43,13 @@ class Facebook(object):
         except Exception, e:
             logging.error("Facebook login failed. Couldn't connect to login page")
             logging.error(str(e))
-            return False
+            self.login_successful = False
+            return self.login_successful
         self.session.set_field_value("#email", email)
         self.session.set_field_value("#pass", password)
         self.session.call("#login_form", "submit", expect_loading=True)
-        return True
+        self.login_successful = True
+        return self.login_successful
 
     def get_access_token(self, app_id):
         """
