@@ -11,7 +11,9 @@ __author__ = 'kharts'
 
 from ghost import Ghost
 from facebook import Facebook
+import logging
 
+# Client ID for Shazam app on Facebook
 app_id = "210827375150"
 
 
@@ -27,6 +29,19 @@ class Shazam(object):
         if facebook is None:
             facebook = Facebook(self.session)
         self.facebook = facebook
+        self.login_successful = False
+        self.fat = None # Facebook access token
+
+    def login(self):
+        """
+        Performs Shazam login
+        :return: bool - True if success, False - otherwise
+        """
+        fat = self.facebook.get_access_token(app_id)
+        if not fat:
+            logging.error("Couldn't get Facebook access token")
+            self.login_successful = False
+            return False
 
     def get_history(self):
         """
@@ -34,5 +49,5 @@ class Shazam(object):
         :return: list of dictionaries
         """
 
-        fat = self.facebook.get_access_token()
+
         return []
