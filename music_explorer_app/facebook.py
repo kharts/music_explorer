@@ -55,7 +55,7 @@ class Facebook(object):
         """
         Gets access token for given app
         :param: app_id: str - application id
-        :return: str
+        :return: str or None (if fail)
         """
 
         redirect_uri = "https://www.facebook.com/connect/login_success.html"
