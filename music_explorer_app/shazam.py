@@ -12,6 +12,8 @@ __author__ = 'kharts'
 from ghost import Ghost
 from facebook import Facebook
 
+app_id = "210827375150"
+
 
 class Shazam(object):
     """
@@ -32,4 +34,5 @@ class Shazam(object):
         :return: list of dictionaries
         """
 
+        fat = self.facebook.get_access_token()
         return []
