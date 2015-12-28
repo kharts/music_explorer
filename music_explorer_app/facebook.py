@@ -11,6 +11,7 @@ __author__ = 'kharts'
 
 import logging
 from ghost import Ghost
+from urlparse import urlparse, parse_qs
 
 
 class Facebook(object):
@@ -63,4 +64,11 @@ class Facebook(object):
             logging.error("Error getting Facebook access token.")
             logging.error(str(e))
             return None
-        return None
+        urlparts = urlparse(page.url)
+        query_params = parse_qs(urlparts.query)
+        codes = query_params.get("code", [])
+        if codes:
+            return codes[0]
+        else:
+            return None
+
