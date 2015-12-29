@@ -37,6 +37,9 @@ class Facebook(object):
         :return: bool - True - if login successfull, False - otherwise
         """
 
+        if self.login_successful:
+            return True
+
         url = "https://facebook.com/login.php"
         try:
             page, extra_resources = self.session.open(url)
