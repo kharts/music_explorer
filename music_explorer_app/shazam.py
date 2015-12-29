@@ -37,6 +37,10 @@ class Shazam(object):
         Performs Shazam login
         :return: bool - True if success, False - otherwise
         """
+
+        if self.login_successful:
+            return True
+
         fat = self.facebook.get_access_token(app_id)
         if not fat:
             logging.error("Couldn't get Facebook access token")
