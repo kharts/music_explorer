@@ -84,3 +84,15 @@ class Facebook(object):
         else:
             return None
 
+    def get_user_id(self):
+        """
+        Gets user id from Facebook cookies
+        :return: str (if Found) or None (otherwise)
+        """
+
+        user_id = None
+        for cookie in self.session.cookies:
+            if str(cookie.name()) == "c_user":
+                user_id = str(cookie.value())
+        return user_id
+
