@@ -40,25 +40,29 @@ class Shazam(object):
         if not self.facebook.login():
             return False
 
-        # fat = self.facebook.get_access_token(app_id)
-        # if not fat:
-        #     logging.error("Couldn't get Facebook access token")
-        #     self.login_successful = False
+        fat = self.facebook.get_access_token(app_id)
+        if not fat:
+            logging.error("Couldn't get Facebook access token")
+            return False
+
+        user_id = self.facebook.get_user_id()
+        if not user_id:
+            logging.error("Couldn't get Facebook user id")
+            return False
+        # myshazam_url = "http://www.shazam.com/myshazam"
+        # try:
+        #     self.session.open(myshazam_url)
+        # except Exception, e:
+        #     logging.error("Shazam login failed. Couldn't open myshazam page.")
+        #     logging.error(str(e))
         #     return False
-        myshazam_url = "http://www.shazam.com/myshazam"
-        try:
-            self.session.open(myshazam_url)
-        except Exception, e:
-            logging.error("Shazam login failed. Couldn't open myshazam page.")
-            logging.error(str(e))
-            return False
-        try:
-            self.session.evaluate("document.querySelector('.js-fblogin').click();",
-                                  expect_loading=True)
-        except Exception, e:
-            logging.error("Shazam login failed. Couldn't click login button.")
-            logging.error(str(e))
-            return False
+        # try:
+        #     self.session.evaluate("document.querySelector('.js-fblogin').click();",
+        #                           expect_loading=True)
+        # except Exception, e:
+        #     logging.error("Shazam login failed. Couldn't click login button.")
+        #     logging.error(str(e))
+        #     return False
         self.login_successful = True
         return True
 
