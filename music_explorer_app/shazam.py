@@ -52,6 +52,13 @@ class Shazam(object):
             logging.error("Shazam login failed. Couldn't open myshazam page.")
             logging.error(str(e))
             return False
+        try:
+            self.session.click(".js-fblogin")
+        except Exception, e:
+            logging.error("Shazam login failed. Couldn't click login button.")
+            logging.error(str(e))
+            return False
+        self.login_successful = True
         return True
 
     def get_history(self):
