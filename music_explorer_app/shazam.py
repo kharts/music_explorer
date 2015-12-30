@@ -41,11 +41,19 @@ class Shazam(object):
         if self.login_successful:
             return True
 
-        fat = self.facebook.get_access_token(app_id)
-        if not fat:
-            logging.error("Couldn't get Facebook access token")
-            self.login_successful = False
+        # fat = self.facebook.get_access_token(app_id)
+        # if not fat:
+        #     logging.error("Couldn't get Facebook access token")
+        #     self.login_successful = False
+        #     return False
+        myshazam_url = "http://www.shazam.com/myshazam"
+        try:
+            self.session.open(myshazam_url)
+        except Exception, e:
+            logging.error("Shazam login failed. Couldn't open myshazam page.")
+            logging.error(str(e))
             return False
+        return True
 
     def get_history(self):
         """
@@ -53,5 +61,6 @@ class Shazam(object):
         :return: list of dictionaries
         """
 
-
+        if not self.login():
+            return []
         return []
