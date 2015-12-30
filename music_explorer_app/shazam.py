@@ -53,7 +53,8 @@ class Shazam(object):
             logging.error(str(e))
             return False
         try:
-            self.session.click(".js-fblogin")
+            self.session.evaluate("document.querySelector('.js-fblogin').click();",
+                                  expect_loading=True)
         except Exception, e:
             logging.error("Shazam login failed. Couldn't click login button.")
             logging.error(str(e))
