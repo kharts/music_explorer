@@ -22,13 +22,9 @@ class Shazam(object):
     Provides methods for downloading Shazam history
     """
 
-    def __init__(self, session=None, facebook=None):
-        if session is None:
-            session = Ghost().start()
-        self.session = session
-        if facebook is None:
-            facebook = Facebook(self.session)
-        self.facebook = facebook
+    def __init__(self, fb_email=None, fb_password=None):
+        self.session = Ghost().start()
+        self.facebook = Facebook(self.session, fb_email, fb_password)
         self.login_successful = False
         self.fat = None # Facebook access token
 
@@ -40,6 +36,9 @@ class Shazam(object):
 
         if self.login_successful:
             return True
+
+        if not self.facebook.login():
+            return False
 
         # fat = self.facebook.get_access_token(app_id)
         # if not fat:

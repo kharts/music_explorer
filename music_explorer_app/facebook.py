@@ -22,13 +22,15 @@ class Facebook(object):
             in case of success, saves auth cookies.
     """
 
-    def __init__(self, session=None):
+    def __init__(self, session=None, email=None, password=None):
         if session is None:
             session = Ghost().start()
         self.session = session
+        self.email = email
+        self.password = password
         self.login_successful = False
 
-    def login(self, email, password):
+    def login(self, email=None, password=None):
         """
         Performs login procedure. Saves sensitive
         information into cj variable
@@ -39,6 +41,10 @@ class Facebook(object):
 
         if self.login_successful:
             return True
+        if email is not None:
+            self.email = email
+        if password is not None:
+            self.password = password
 
         url = "https://facebook.com/login.php"
         try:
@@ -48,8 +54,8 @@ class Facebook(object):
             logging.error(str(e))
             self.login_successful = False
             return self.login_successful
-        self.session.set_field_value("#email", email)
-        self.session.set_field_value("#pass", password)
+        self.session.set_field_value("#email", self.email)
+        self.session.set_field_value("#pass", self.password)
         self.session.call("#login_form", "submit", expect_loading=True)
         self.login_successful = True
         return self.login_successful
