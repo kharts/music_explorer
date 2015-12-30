@@ -12,6 +12,7 @@ __author__ = 'kharts'
 from ghost import Ghost
 from facebook import Facebook
 import logging
+import urllib
 
 # Client ID for Shazam app on Facebook
 app_id = "210827375150"
@@ -48,6 +49,19 @@ class Shazam(object):
         user_id = self.facebook.get_user_id()
         if not user_id:
             logging.error("Couldn't get Facebook user id")
+            return False
+
+        query = [("fat", fat),
+                 ("uid", user_id)]
+        body = urllib.urlencode(query)
+        login_url = "http://www.shazam.com/login"
+        try:
+            self.session.open(login_url,
+                              method="post",
+                              body=body)
+        except Exception, e:
+            logging.error("Shazam login failed")
+            logging.error(str(e))
             return False
         # myshazam_url = "http://www.shazam.com/myshazam"
         # try:
